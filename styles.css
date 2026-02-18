@@ -68,9 +68,13 @@
   --shadow: 0 18px 54px rgba(15, 17, 21, 0.12);
 
   /* Gradients */
-  --grad-hero: radial-gradient(900px 520px at 16% -18%, rgba(255, 233, 205, 0.70), transparent 60%),
-    radial-gradient(680px 420px at 92% 4%, rgba(242, 198, 212, 0.38), transparent 58%),
-    radial-gradient(520px 380px at 72% 92%, rgba(242, 198, 212, 0.18), transparent 62%);
+  --grad-hero: radial-gradient(920px 520px at 46% -20%, rgba(255, 238, 220, 0.82), transparent 60%),
+    radial-gradient(460px 320px at 112% 8%, rgba(242, 198, 212, 0.22), transparent 62%),
+    radial-gradient(540px 420px at 82% 110%, rgba(242, 198, 212, 0.14), transparent 65%);
+
+  /* Mobile: keep pink as an accent, keep the logo area warm/neutral */
+  --grad-hero-mobile: radial-gradient(920px 560px at 50% -28%, rgba(255, 238, 220, 0.88), transparent 65%),
+    radial-gradient(600px 420px at 50% 125%, rgba(242, 198, 212, 0.14), transparent 65%);
 
   --grad-dark: linear-gradient(135deg, #0f1115, #252a36);
 }
@@ -436,9 +440,65 @@ section[id] {
   border-top: 1px solid rgba(15, 17, 21, 0.08);
 }
 
-@media (max-width: 420px) {
-  .brand-tag {
+@media (max-width: 760px) {
+  /* Use a warmer hero background on mobile so the gold logo pops */
+  body {
+    background: var(--grad-hero-mobile), var(--bg);
+  }
+
+  /* Mobile header: menu left, logo centered, quick icons right */
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.65rem 0;
+  }
+
+  .menu-btn {
+    grid-column: 1;
+    justify-self: start;
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand {
+    grid-column: 2;
+    justify-self: center;
+    gap: 0;
+  }
+
+  .brand-text {
     display: none;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-cta {
+    grid-column: 3;
+    justify-self: end;
+    gap: var(--space-2);
+  }
+
+  /* The sticky bottom bar already has “Get a Quote” */
+  .header-quote {
+    display: none !important;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* Make the dropdown menu align to the header nicely */
+  .menu-open .nav {
+    top: calc(100% + 12px);
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
   }
 }
 
@@ -547,12 +607,12 @@ section[id] {
 .hero-lockup::before {
   content: "";
   position: absolute;
-  inset: -22% -18% -28% -18%;
+  inset: -18% -14% -22% -14%;
   border-radius: 999px;
-  background:
-    radial-gradient(ellipse at 46% 36%, rgba(255, 252, 244, 0.96) 0%, rgba(255, 233, 205, 0.62) 44%, rgba(196, 154, 82, 0.18) 74%, rgba(255, 255, 255, 0) 100%);
-  filter: blur(10px);
-  opacity: 0.98;
+  /* Softer halo (less ring contrast) so the ornate gold logo stays crisp */
+  background: radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.96) 0%, rgba(255, 244, 230, 0.62) 56%, rgba(255, 244, 230, 0) 100%);
+  filter: blur(14px);
+  opacity: 0.82;
   z-index: -1;
 }
 

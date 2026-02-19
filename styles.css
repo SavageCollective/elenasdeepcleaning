@@ -643,6 +643,37 @@ section[id] {
   color: var(--ink);
   font-weight: 700;
   font-size: var(--fs-small);
+  max-width: 100%;
+  justify-content: center;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Split pill (area • hours) so mobile wrapping looks intentional */
+.pill-split .pill-area,
+.pill-split .pill-hours {
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .pill-split {
+    flex-wrap: wrap;
+    row-gap: 0.35rem;
+    padding: 0.65rem 0.95rem;
+  }
+
+  .pill-split .pill-area,
+  .pill-split .pill-hours {
+    white-space: normal;
+  }
+
+  .pill-split .pill-area {
+    flex-basis: 100%;
+  }
+
+  .pill-split .pill-sep {
+    display: none;
+  }
 }
 
 .dot {
@@ -836,15 +867,14 @@ section[id] {
 
 .trust-list li {
   width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
+  display: block;
   padding: 0.55rem 0.75rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(15, 17, 21, 0.08);
   background: rgba(255, 255, 255, 0.80);
   text-align: center;
+  line-height: 1.35;
+  text-wrap: balance;
 }
 
 
@@ -1302,6 +1332,10 @@ form {
   gap: var(--space-5);
 }
 
+.footer-grid p {
+  margin: 0;
+}
+
 .footer-brand {
   display: flex;
   align-items: center;
@@ -1342,12 +1376,22 @@ form {
   margin-bottom: var(--space-2);
 }
 
-.footer-links a {
-  color: rgba(255, 255, 255, 0.92);
+.footer-links {
+  display: grid;
+  gap: 0.35rem;
 }
 
-.footer-links a:hover {
+.footer a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration-skip-ink: none;
+  text-decoration-color: rgba(255, 255, 255, 0.66);
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.22em;
+}
+
+.footer a:hover {
   color: #ffffff;
+  text-decoration-color: rgba(255, 255, 255, 0.92);
 }
 
 .footer .muted {

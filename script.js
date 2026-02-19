@@ -174,34 +174,4 @@
   window.addEventListener('popstate', syncFromHash);
   syncFromHash();
 
-  // ---------------------------------------------------------------------------
-  // Form UX + local preview redirect (Netlify Forms won't run locally)
-  // ---------------------------------------------------------------------------
-  const form = document.querySelector('form[name="quote"]');
-  if (form) {
-    const isLocal =
-      window.location.protocol === 'file:' ||
-      ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
-
-    form.addEventListener('submit', (e) => {
-      form.classList.add('was-submitted');
-
-      // If running locally, simulate success redirect so you can click through the flow.
-      if (isLocal) {
-        e.preventDefault();
-        window.location.href = '/thanks.html';
-      }
-    });
-
-    // Basic phone auto-format (light touch, does not block international)
-    const phone = form.querySelector('#phone');
-    if (phone) {
-      phone.addEventListener('blur', () => {
-        const raw = phone.value.replace(/\D/g, '');
-        if (raw.length === 10) {
-          phone.value = `(${raw.slice(0, 3)}) ${raw.slice(3, 6)}-${raw.slice(6)}`;
-        }
-      });
-    }
-  }
 })();

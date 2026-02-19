@@ -120,6 +120,18 @@ p {
   margin: 0 0 var(--space-4);
 }
 
+/*
+  Mobile-first typography polish:
+  - balance headings to avoid awkward one-word lines
+  - make paragraphs/lists wrap more naturally when supported
+*/
+
+p,
+li,
+summary {
+  text-wrap: pretty;
+}
+
 h1,
 h2,
 h3 {
@@ -142,6 +154,11 @@ h1 {
   font-size: var(--fs-h1);
   line-height: var(--lh-tight);
   letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+h2,
+h3 {
   text-wrap: balance;
 }
 
@@ -449,7 +466,11 @@ section[id] {
   /* Mobile header: menu left, logo centered, quick icons right */
   .header-inner {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    /*
+      Use equal side columns so the logo is *visually* centered even when
+      right-side content differs slightly from the left.
+    */
+    grid-template-columns: 44px 1fr 44px;
     align-items: center;
     gap: var(--space-2);
     padding: 0.65rem 0;
@@ -481,6 +502,12 @@ section[id] {
     grid-column: 3;
     justify-self: end;
     gap: var(--space-2);
+  }
+
+  /* Call/Text live in the sticky bottom bar on mobile; hide header duplicates */
+  .header-cta a.icon-btn[href^="tel:"],
+  .header-cta a.icon-btn[href^="sms:"] {
+    display: none;
   }
 
   /* The sticky bottom bar already has “Get a Quote” */
@@ -571,6 +598,30 @@ section[id] {
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-5);
+}
+
+@media (max-width: 520px) {
+  /* Stack section CTAs to keep typography and rhythm clean on small screens */
+  .inline-cta,
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inline-cta .btn,
+  .cta-row .btn {
+    width: 100%;
+  }
+
+  /* Quote form actions: prevent cramped side-by-side text + button layouts */
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -867,20 +918,43 @@ section[id] {
 
 .trust-list li {
   width: 100%;
-  display: block;
-  padding: 0.55rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.65rem 0.85rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(15, 17, 21, 0.08);
   background: rgba(255, 255, 255, 0.80);
   text-align: center;
-  line-height: 1.35;
-  text-wrap: balance;
+  line-height: 1.22;
+  font-size: var(--fs-small);
+}
+
+.trust-note {
+  display: block;
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 0.92em;
+  line-height: 1.1;
 }
 
 
 .trust-list strong {
   color: var(--ink);
   font-weight: 800;
+}
+
+@media (max-width: 560px) {
+  /* Mobile: keep chips tidy and avoid an orphaned last pill */
+  .trust-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trust-list li:last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1414,6 +1488,103 @@ form {
 
 .footer-bottom a:hover {
   color: #ffffff;
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/* Service accordion cards                                                     */
+/* -------------------------------------------------------------------------- */
+
+.lang-btn {
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.service-card {
+  padding: 0; /* override .card padding */
+  gap: 0; /* keep borders/padding flush when expanded */
+  overflow: hidden;
+}
+
+.service-card summary {
+  padding: var(--space-5);
+  align-items: flex-start;
+}
+
+.service-card summary::after {
+  margin-top: 0.15rem;
+}
+
+.service-card .service-summary h3 {
+  margin: 0;
+}
+
+.service-card .service-summary p {
+  margin: 0 0 var(--space-3);
+}
+
+.service-card .service-body {
+  padding: 0 var(--space-5) var(--space-5);
+  border-top: 1px solid rgba(15, 17, 21, 0.08);
+}
+
+.service-card .service-body h4 {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: 1rem;
+}
+
+.bullet {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+  color: var(--muted);
+}
+
+.bullet li {
+  line-height: 1.45;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Contact section                                                             */
+/* -------------------------------------------------------------------------- */
+
+.contact-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.contact-sub {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: 0.98rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 860px) {
+  .contact-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+}
+
+@media (max-width: 560px) {
+  .service-card summary {
+    padding: var(--space-4);
+  }
+
+  .service-card .service-body {
+    padding: 0 var(--space-4) var(--space-4);
+  }
 }
 
 /* -------------------------------------------------------------------------- */

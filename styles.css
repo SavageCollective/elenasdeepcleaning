@@ -372,6 +372,12 @@ section[id] {
   display: none;
 }
 
+/* Keep the sticky quote button from wrapping “Get a Quote” */
+.header-quote {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
 .icon-btn {
   display: grid;
   place-items: center;
@@ -1681,8 +1687,31 @@ form {
     display: none;
   }
 
+  /*
+    Desktop sticky header (when the hero is no longer in view):
+    keep everything on one clean line.
+    - Hide the long brand text to make room for nav + CTAs
+    - Keep nav/button labels from wrapping
+  */
+  body:not(.is-top) .brand-text {
+    display: none;
+  }
+
+  body:not(.is-top) .brand {
+    gap: 0;
+  }
+
   .nav {
     display: flex;
+  }
+
+  .nav a {
+    white-space: nowrap;
+  }
+
+  /* Slightly tighter nav spacing so links don't wrap on common desktop widths */
+  body:not(.is-top) .nav {
+    gap: var(--space-3);
   }
 
   .hero-grid {

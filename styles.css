@@ -463,24 +463,17 @@ section[id] {
     background: var(--grad-hero-mobile), var(--bg);
   }
 
-  /* Mobile header: menu left, logo centered, quick icons right */
+  /* Mobile header: logo centered, language toggle right */
   .header-inner {
     display: grid;
     /*
       Use equal side columns so the logo is *visually* centered even when
       right-side content differs slightly from the left.
     */
-    grid-template-columns: 44px 1fr 44px;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: var(--space-2);
     padding: 0.65rem 0;
-  }
-
-  .menu-btn {
-    grid-column: 1;
-    justify-self: start;
-    width: 44px;
-    height: 44px;
   }
 
   .brand {
@@ -502,6 +495,12 @@ section[id] {
     grid-column: 3;
     justify-self: end;
     gap: var(--space-2);
+  }
+
+  /* Center the ornate hero logo on small screens */
+  .hero-lockup {
+    display: block;
+    margin-inline: auto;
   }
 
   /* Call/Text live in the sticky bottom bar on mobile; hide header duplicates */

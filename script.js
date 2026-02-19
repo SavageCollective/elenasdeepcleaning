@@ -6,6 +6,14 @@
   const nav = document.querySelector('[data-menu]');
   const hero = document.querySelector('#top');
 
+  // Desktop breakpoint matches CSS (@media (min-width: 860px))
+  const desktopMQ = window.matchMedia('(min-width: 860px)');
+  const isMobileMenu = () => !desktopMQ.matches;
+
+  // Preserve the original label so desktop keeps a normal “home” affordance
+  const menuBtnHomeLabel = menuBtn ? menuBtn.getAttribute('aria-label') : '';
+  const openMenuLabel = document.documentElement.lang === 'es' ? 'Abrir menú' : 'Open menu';
+
   // Year
   const yearEl = document.querySelector('[data-year]');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -49,7 +57,33 @@
   };
 
   if (menuBtn && nav) {
-    menuBtn.addEventListener('click', () => {
+    // Treat the header logo as the mobile menu button.
+    // On desktop, it should behave like a normal “home” link.
+    const syncMenuBtnA11y = () => {
+      if (!menuBtn) return;
+
+      if (isMobileMenu()) {
+        menuBtn.setAttribute('aria-label', openMenuLabel);
+        menuBtn.setAttribute('aria-haspopup', 'menu');
+        // aria-controls is already in the markup; keep aria-expanded in sync
+        menuBtn.setAttribute('aria-expanded', String(body.classList.contains('menu-open')));
+      } else {
+        if (menuBtnHomeLabel) menuBtn.setAttribute('aria-label', menuBtnHomeLabel);
+        menuBtn.removeAttribute('aria-haspopup');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    syncMenuBtnA11y();
+    // Re-sync on resize/orientation change
+    window.addEventListener('resize', syncMenuBtnA11y, { passive: true });
+
+    menuBtn.addEventListener('click', (e) => {
+      // Desktop: let the logo behave like a normal link to the top.
+      if (!isMobileMenu()) return;
+
+      // Mobile: open/close the menu, and prevent jumping to #top.
+      e.preventDefault();
       const isOpen = body.classList.toggle('menu-open');
       menuBtn.setAttribute('aria-expanded', String(isOpen));
     });
@@ -89,6 +123,9 @@
   };
 
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    // Skip smooth-scroll for the mobile menu toggle (header logo)
+    if (a.hasAttribute('data-menu-button')) return;
+
     a.addEventListener('click', (e) => {
       if (a.classList.contains('skip-link')) return;
 
